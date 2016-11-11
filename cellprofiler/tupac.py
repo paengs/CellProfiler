@@ -1,8 +1,7 @@
+import os
+import sys
 import logging
 import logging.config
-import sys
-import os
-import numpy as np
 
 def main(pipeline_path):
     ''' Run CellProfiler '''
@@ -10,33 +9,11 @@ def main(pipeline_path):
     cpprefs.set_awt_headless(True)
     cpprefs.set_headless()
     set_log_level()
-
     try:
         run_pipeline_headless(pipeline_path)
-
     except Exception, e:
         logging.root.fatal("Uncaught exception in CellProfiler.py", exc_info=True)
         raise
-
-    finally:
-        stop_cellprofiler()
-
-def stop_cellprofiler():
-    try:
-        from ilastik.core.jobMachine import GLOBAL_WM
-        GLOBAL_WM.stopWorkers()
-    except:
-        logging.root.warn("Failed to stop Ilastik")
-    try:
-        from cellprofiler.utilities.zmqrequest import join_to_the_boundary
-        join_to_the_boundary()
-    except:
-        logging.root.warn("Failed to stop zmq boundary", exc_info=1)
-    try:
-        from cellprofiler.utilities.cpjvm import cp_stop_vm
-        cp_stop_vm()
-    except:
-        logging.root.warn("Failed to stop the JVM", exc_info=1)
 
 def set_log_level():
     '''Set the logging package's log level based on command-line options'''
@@ -61,10 +38,8 @@ def run_pipeline_headless(pipeline_path):
     img_dict = {'input':img }
     count = pipeline.count_cell(img_dict)
     print count
-    import ipdb
-    ipdb.set_trace()
 
 if __name__ == "__main__":
     import sys
     sys.path.append('../')
-    main('/home/paeng/projects/5__LUNIT/1__PATHO/cellprofiler/pipeline/HandEPipeline_mini_new.cppipe')
+    main('/home/paeng/projects/5__LUNIT/1__PATHO/tupac16/docker/cell_detection_pipeline.cppipe')
