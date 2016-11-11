@@ -28,8 +28,6 @@ def set_log_level():
 def run_pipeline_headless(pipeline_path):
     '''Run a CellProfiler pipeline in headless mode'''
     from cellprofiler.pipeline import Pipeline
-
-    pipeline_path = os.path.expanduser(pipeline_path)
     pipeline = Pipeline()
     pipeline.load(pipeline_path)
 
