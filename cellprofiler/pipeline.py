@@ -1569,6 +1569,41 @@ class Pipeline(object):
         for module in self.modules(False):
             module.obfuscate()
 
+    def count_cell(self, image_dict):
+        """Runs a single iteration of the pipeline with the images provided in
+        image_dict and returns a dictionary mapping from image names to images
+        specified by ExternalImageNameSubscribers.
+
+        image_dict - dictionary mapping image names to image pixel data in the
+                     form of a numpy array.
+        """
+        import cellprofiler.settings as cps
+        from cellprofiler import objects as cpo
+
+        output_image_names = self.find_external_output_images()
+        input_image_names = self.find_external_input_images()
+        # Check that the incoming dictionary matches the names expected by the
+        # ExternalImageProviders
+        for name in input_image_names:
+            assert name in image_dict, 'Image named "%s" was not provided in the input dictionary'%(name)
+        # Create image set from provided dict
+        image_set_list = cpi.ImageSetList()
+        image_set = image_set_list.get_image_set(0)
+        for image_name in input_image_names:
+            input_pixels = image_dict[image_name]
+            image_set.add(image_name, cpi.Image(input_pixels))
+        object_set = cpo.ObjectSet()
+        measurements = cpmeas.Measurements()
+
+        # Run the modules
+        for module in self.modules():
+            workspace = cpw.Workspace(self, module, image_set, object_set,
+                                      measurements, image_set_list)
+            self.run_module(module, workspace)
+
+        cell_count = workspace.measurements.get_measurement('Image','Count_Filled')
+        return cell_count
+
     def run_external(self, image_dict):
         """Runs a single iteration of the pipeline with the images provided in
         image_dict and returns a dictionary mapping from image names to images
@@ -1582,12 +1617,10 @@ class Pipeline(object):
 
         output_image_names = self.find_external_output_images()
         input_image_names = self.find_external_input_images()
-
         # Check that the incoming dictionary matches the names expected by the
         # ExternalImageProviders
         for name in input_image_names:
             assert name in image_dict, 'Image named "%s" was not provided in the input dictionary'%(name)
-
         # Create image set from provided dict
         image_set_list = cpi.ImageSetList()
         image_set = image_set_list.get_image_set(0)
