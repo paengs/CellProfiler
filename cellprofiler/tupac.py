@@ -32,12 +32,19 @@ def run_pipeline_headless(pipeline_path):
     pipeline.load(pipeline_path)
 
     from skimage import io
-    img = io.imread('/home/paeng/projects/5__LUNIT/1__PATHO/tupac16/data/TUPAC-TE-001/roi_results/0/crop_0_0.jpg')
+    #img = io.imread('/data2/almighty/smc_scanner_study/cropped/201605_3DHISTECH_X40/S16-10801-4E/0/S16-10801-4E_0_113552_248596_33792_60416_1024_1024.jpg')
+    img = io.imread('samples/test.jpg')
     img_dict = {'input':img }
     count = pipeline.count_cell(img_dict)
     print count
-
+    ''' gen cell map example
+    count = pipeline.gen_cell_map(img_dict)
+    import matplotlib.pyplot as plt
+    plt.imshow(img)
+    plt.imshow(count, alpha=0.7)
+    plt.show()
+    '''
 if __name__ == "__main__":
     import sys
     sys.path.append('../')
-    main('/home/paeng/projects/5__LUNIT/1__PATHO/tupac16/docker/cell_detection_pipeline.cppipe')
+    main('samples/test.cppipe')
