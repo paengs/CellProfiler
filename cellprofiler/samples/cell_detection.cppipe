@@ -18,9 +18,9 @@ ColorToGray:[module_num:3|svn_version:\'Unknown\'|variable_revision_number:3|sho
     Relative weight of the blue channel:1
     Convert red to gray?:Yes
     Name the output image:OrigRed
-    Convert green to gray?:Yes
+    Convert green to gray?:No
     Name the output image:OrigGreen
-    Convert blue to gray?:Yes
+    Convert blue to gray?:No
     Name the output image:OrigBlue
     Convert hue to gray?:Yes
     Name the output image:OrigHue
@@ -54,8 +54,8 @@ ImageMath:[module_num:4|svn_version:\'Unknown\'|variable_revision_number:4|show_
 IdentifyPrimaryObjects:[module_num:5|svn_version:\'Unknown\'|variable_revision_number:10|show_window:True|notes:\x5B\'Identify the cells. The per-image count is output by this module. Some more tweaking of the settings is definitely needed.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:InvertedRed
     Name the primary objects to be identified:Filled
-    Typical diameter of objects, in pixel units (Min,Max):20,40
-    Discard objects outside the diameter range?:No
+    Typical diameter of objects, in pixel units (Min,Max):5,100
+    Discard objects outside the diameter range?:Yes
     Try to merge too small objects with nearby larger objects?:No
     Discard objects touching the border of the image?:No
     Method to distinguish clumped objects:Laplacian of Gaussian
@@ -76,12 +76,12 @@ IdentifyPrimaryObjects:[module_num:5|svn_version:\'Unknown\'|variable_revision_n
     Maximum number of objects:500
     Threshold setting version:1
     Threshold strategy:Adaptive
-    Thresholding method:Otsu
+    Thresholding method:MoG
     Select the smoothing method for thresholding:Automatic
     Threshold smoothing scale:1
     Threshold correction factor:1
     Lower and upper bounds on threshold:.3,1.000000
-    Approximate fraction of image covered by objects?:0.01
+    Approximate fraction of image covered by objects?:0.1
     Manual threshold:0.0
     Select the measurement to threshold with:None
     Select binary image:A10-14
