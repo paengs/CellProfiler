@@ -3,8 +3,6 @@ import sys
 import logging
 import logging.config
 
-PATH = None
-
 def main(pipeline_path):
     ''' Run CellProfiler '''
     import cellprofiler.preferences as cpprefs
@@ -35,12 +33,11 @@ def run_pipeline_headless(pipeline_path):
 
     from skimage import io
     img = io.imread('samples/test.jpg')
-    img = io.imread(PATH)
     img_dict = {'input':img }
     count = pipeline.count_cell(img_dict)
     print count
     """ gen cell map example
-    count = pipeline.gen_cell_map(img_dict)
+    cell_map = pipeline.gen_cell_map(img_dict)
     import matplotlib.pyplot as plt
     import matplotlib.cm as cm
     plt.subplot(1,2,1)
@@ -48,13 +45,12 @@ def run_pipeline_headless(pipeline_path):
     plt.axis('off')
     plt.subplot(1,2,2)
     plt.imshow(img)
-    plt.imshow(count, cmap=cm.jet, alpha=0.8, vmin=0.0, vmax=1.0)
+    plt.imshow(cell_map, cmap=cm.jet, alpha=0.5, vmin=0.0, vmax=1.0)
     plt.axis('off')
     plt.show()
     """
 if __name__ == "__main__":
     import sys
     sys.path.append('../')
-    PATH=sys.argv[1]
     #main('samples/cell_detection.cppipe')
     main('samples/tupac.cppipe')
